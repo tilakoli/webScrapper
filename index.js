@@ -1,5 +1,5 @@
-const axios = require("axios");
-const cheerio = require("cheerio");
+// const axios = require("axios");
+// const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 const fs = require("fs");
 const path = require("path");
@@ -27,6 +27,48 @@ const path = require("path");
 
 // [-------------------------Puppetier------------------]
 
+// async function scrapeWebsiteWithPuppeteer(url) {
+//   try {
+//     console.log("Running scraper...");
+//     const browser = await puppeteer.launch();
+//     const page = await browser.newPage();
+//     await page.goto(url, {waitUntil: "networkidle2"});
+
+//     const heading = await page.evaluate(() => {
+//       return Array.from(document.querySelectorAll("article")).map(
+//         (div) => div.class === "markdown-heading"
+//       );
+//     });
+//     console.log("heading==>:", heading, "<===");
+// const dirPath = path.join(__dirname, "test");
+// if (!fs.existsSync(dirPath)) {
+//   fs.mkdirSync(dirPath);
+// }
+
+// let sourceIndex = 0;
+// const filePath = path.join(dirPath, "iframe_sources.txt");
+
+// if (fs.existsSync(filePath)) {
+//   const fileContent = fs.readFileSync(filePath, "utf8");
+//   const matches = fileContent.match(/Source(\d+)=/g);
+//   if (matches) {
+//     sourceIndex = matches.length;
+//   }
+// }
+// const fileStream = fs.createWriteStream(filePath, {flags: "a"}); // 'a' for append
+// iframes.forEach((iframeSrc, index) => {
+//   sourceIndex++;
+//   fileStream.write(`Source${sourceIndex}=${iframeSrc}\n`);
+// });
+// fileStream.end();
+//     await browser.close();
+//   } catch (error) {
+//     console.error("Error", error.message);
+//   }
+// }
+
+// scrapeWebsiteWithPuppeteer("https://github.com/tilakoli/"); // source url here
+
 async function scrapeWebsiteWithPuppeteer(url) {
   try {
     console.log("Running scraper...");
@@ -34,38 +76,22 @@ async function scrapeWebsiteWithPuppeteer(url) {
     const page = await browser.newPage();
     await page.goto(url, {waitUntil: "networkidle2"});
 
-    const iframes = await page.evaluate(() => {
-      return Array.from(document.querySelectorAll("iframe")).map(
-        (iframe) => iframe.src
+    const heading = await page.evaluate(() => {
+      console.log("+++++++> Visited Page <+++++++");
+      return Array.from(document.querySelectorAll("article")).map(
+        (div) => div.class === "markdown-heading"
       );
     });
-    console.log("iframes:", iframes);
-
-    const dirPath = path.join(__dirname, "test");
-    if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath);
-    }
-
-    let sourceIndex = 0;
-    const filePath = path.join(dirPath, "iframe_sources.txt");
-
-    if (fs.existsSync(filePath)) {
-      const fileContent = fs.readFileSync(filePath, "utf8");
-      const matches = fileContent.match(/Source(\d+)=/g);
-      if (matches) {
-        sourceIndex = matches.length;
-      }
-    }
-    const fileStream = fs.createWriteStream(filePath, {flags: "a"}); // 'a' for append
-    iframes.forEach((iframeSrc, index) => {
-      sourceIndex++;
-      fileStream.write(`Source${sourceIndex}=${iframeSrc}\n`);
-    });
-    fileStream.end();
     await browser.close();
   } catch (error) {
     console.error("Error", error.message);
   }
 }
 
-scrapeWebsiteWithPuppeteer(""); // source url here
+(async function runScraper() {
+  const url = "https://github.com/tilakoli/";
+  for (let i = 0; i < 10; i++) {
+    console.log(`Function Run Count: ${i + 1}`);
+    await scrapeWebsiteWithPuppeteer(url);
+  }
+})();
