@@ -88,12 +88,18 @@ async function scrapeWebsiteWithPuppeteer(url) {
   }
 }
 
-setTimeout(() =>{
-(async function runScraper() {
-  const url = "https://github.com/tilakoli/";
-  for (let i = 0; i < 500; i++) {
-    console.log(`Run Count=====> ${i + 1} <======`);
-    await scrapeWebsiteWithPuppeteer(url);
-  }
-})();
+setTimeout(() => {
+  (async function runScraper() {
+    const url = "https://github.com/tilakoli/";
+    for (let i = 0; i < 500; i++) {
+      if (i >= 500) {
+        return console.log(
+          `[][][][][][][[]Loop Target Reached ${i}`,
+          "[][][][[][][][]"
+        );
+      }
+      console.log(`Run Count=====> ${i + 1} <======`);
+      await scrapeWebsiteWithPuppeteer(url);
+    }
+  })();
 }, 4000);
