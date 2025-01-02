@@ -49,7 +49,7 @@ async function runViewerLoop(url, iterations) {
 
 // Profile URL to view
 const profileUrl = "https://github.com/tilakoli/";
-const numberOfRuns = 500;
+const numberOfRuns = 1000;
 
 setTimeout(() => {
   runViewerLoop(profileUrl, numberOfRuns);
